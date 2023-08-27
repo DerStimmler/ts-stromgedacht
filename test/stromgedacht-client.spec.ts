@@ -1,6 +1,6 @@
-import { StromgedachtClient } from "../src/stromgedacht-client";
+
 import { noDataMock, nowMock, statesMock } from "./response-mocks";
-import { RegionState } from "../src";
+import { RegionState, stromgedachtClient } from "../src";
 
 describe("StromgedachtClient", () => {
   it("now", async () => {
@@ -10,9 +10,8 @@ describe("StromgedachtClient", () => {
         json: () => Promise.resolve(nowMock),
       }),
     );
-
-    const client = new StromgedachtClient();
-    const state = await client.now("70173");
+    
+    const state = await stromgedachtClient.now("70173");
 
     expect(state).toBe(RegionState.Green);
   });
@@ -24,9 +23,8 @@ describe("StromgedachtClient", () => {
         json: () => Promise.resolve(statesMock),
       }),
     );
-
-    const client = new StromgedachtClient();
-    const states = await client.states(
+    
+    const states = await stromgedachtClient.states(
       "70173",
       new Date("2023-05-14T00:00:00+02:00"),
       new Date("2023-05-20T23:59:59+02:00"),
@@ -62,9 +60,8 @@ describe("StromgedachtClient", () => {
         json: () => Promise.resolve(noDataMock),
       }),
     );
-
-    const client = new StromgedachtClient();
-    const state = await client.now("70170");
+    
+    const state = await stromgedachtClient.now("70170");
 
     expect(state).toBeNull();
   });
@@ -75,9 +72,8 @@ describe("StromgedachtClient", () => {
         status: 500,
       }),
     );
-
-    const client = new StromgedachtClient();
-    const state = await client.now("server-error");
+    
+    const state = await stromgedachtClient.now("server-error");
 
     expect(state).toBeNull();
   });
@@ -88,9 +84,8 @@ describe("StromgedachtClient", () => {
         status: 500,
       }),
     );
-
-    const client = new StromgedachtClient();
-    const states = await client.states("server-error", new Date(), new Date());
+    
+    const states = await stromgedachtClient.states("server-error", new Date(), new Date());
 
     expect(states).toHaveLength(0);
   });

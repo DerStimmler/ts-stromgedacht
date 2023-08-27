@@ -31,7 +31,7 @@ Since the API allows all origins this library can be used in a browser without C
 Just import the client from your node_modules.
 
 ```typescript
-import stromgedachtClient from "ts-stromgedacht";
+import { stromgedachtClient } from "ts-stromgedacht";
 ```
 
 ### Get current state
