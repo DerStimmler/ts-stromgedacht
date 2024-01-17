@@ -22,7 +22,7 @@ export class StromgedachtClient {
   }
 
   /**
-   * Get all region states in a specific time period
+   * Get region states in a specific time period
    * @param zip
    * @param from
    * @param to
@@ -33,6 +33,32 @@ export class StromgedachtClient {
     to: Date,
   ): Promise<RegionStatePeriod[]> {
     const uri = ApiAddresses.states(zip, from, to);
+
+    const response = await fetch(uri);
+
+    if (response.status !== 200) return [];
+
+    const json = await response.json();
+
+    return json.states.map((regionStatePeriod: RegionStatePeriod) => ({
+      state: regionStatePeriod.state,
+      from: new Date(regionStatePeriod.from),
+      to: new Date(regionStatePeriod.to),
+    }));
+  }
+
+  /**
+   * Get region states in a specific time period
+   * @param zip
+   * @param hoursInPast
+   * @param hoursInFuture
+   */
+  public async statesRelative(
+    zip: string,
+    hoursInPast: number,
+    hoursInFuture: number,
+  ): Promise<RegionStatePeriod[]> {
+    const uri = ApiAddresses.statesRelative(zip, hoursInPast, hoursInFuture);
 
     const response = await fetch(uri);
 

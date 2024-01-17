@@ -56,6 +56,15 @@ const to = new Date("2023-01-03");
 const states = stromgedachtClient.states("70173", from, to);
 ```
 
+Start and end time can also be the hours relative to this moment:
+
+```typescript
+const hoursInPast = 24;
+const hoursInFuture = 48;
+
+const states = stromgedachtClient.statesRelative("70173", hoursInPast, hoursInFuture);
+```
+
 If the api returns an error, this method returns an empty array.
 This could happen if the zip code is invalid / not supported or the supported period is exceeded.
 

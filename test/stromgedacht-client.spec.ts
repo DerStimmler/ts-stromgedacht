@@ -1,5 +1,5 @@
 import { noDataMock, nowMock, statesMock } from "./response-mocks";
-import { RegionState, stromgedachtClient } from "../src";
+import { RegionState, RegionStatePeriod, stromgedachtClient } from "../src";
 
 describe("StromgedachtClient", () => {
   it("now", async () => {
@@ -29,27 +29,20 @@ describe("StromgedachtClient", () => {
       new Date("2023-05-20T23:59:59+02:00"),
     );
 
-    expect(states).toHaveLength(5);
+    expectStates(states);
+  });
 
-    expect(states[0].state).toBe(RegionState.Green);
-    expect(states[0].from).toStrictEqual(new Date("2023-05-14T00:00:00+02:00"));
-    expect(states[0].to).toStrictEqual(new Date("2023-05-14T23:59:59+02:00"));
+  it("statesRelative", async () => {
+    globalThis.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        status: 200,
+        json: () => Promise.resolve(statesMock),
+      }),
+    );
 
-    expect(states[1].state).toBe(RegionState.Yellow);
-    expect(states[1].from).toStrictEqual(new Date("2023-05-15T00:00:00+02:00"));
-    expect(states[1].to).toStrictEqual(new Date("2023-05-15T23:59:59+02:00"));
+    const states = await stromgedachtClient.statesRelative("70173", 24, 48);
 
-    expect(states[2].state).toBe(RegionState.Orange);
-    expect(states[2].from).toStrictEqual(new Date("2023-05-16T00:00:00+02:00"));
-    expect(states[2].to).toStrictEqual(new Date("2023-05-16T23:59:59+02:00"));
-
-    expect(states[3].state).toBe(RegionState.Red);
-    expect(states[3].from).toStrictEqual(new Date("2023-05-17T00:00:00+02:00"));
-    expect(states[3].to).toStrictEqual(new Date("2023-05-17T23:59:59+02:00"));
-
-    expect(states[4].state).toBe(RegionState.Green);
-    expect(states[4].from).toStrictEqual(new Date("2023-05-18T00:00:00+02:00"));
-    expect(states[4].to).toStrictEqual(new Date("2023-05-20T23:59:59+02:00"));
+    expectStates(states);
   });
 
   it("NoData", async () => {
@@ -93,3 +86,27 @@ describe("StromgedachtClient", () => {
     expect(states).toHaveLength(0);
   });
 });
+
+const expectStates = (states: RegionStatePeriod[]) => {
+  expect(states).toHaveLength(5);
+
+  expect(states[0].state).toBe(RegionState.Green);
+  expect(states[0].from).toStrictEqual(new Date("2023-05-14T00:00:00+02:00"));
+  expect(states[0].to).toStrictEqual(new Date("2023-05-14T23:59:59+02:00"));
+
+  expect(states[1].state).toBe(RegionState.Yellow);
+  expect(states[1].from).toStrictEqual(new Date("2023-05-15T00:00:00+02:00"));
+  expect(states[1].to).toStrictEqual(new Date("2023-05-15T23:59:59+02:00"));
+
+  expect(states[2].state).toBe(RegionState.Orange);
+  expect(states[2].from).toStrictEqual(new Date("2023-05-16T00:00:00+02:00"));
+  expect(states[2].to).toStrictEqual(new Date("2023-05-16T23:59:59+02:00"));
+
+  expect(states[3].state).toBe(RegionState.Red);
+  expect(states[3].from).toStrictEqual(new Date("2023-05-17T00:00:00+02:00"));
+  expect(states[3].to).toStrictEqual(new Date("2023-05-17T23:59:59+02:00"));
+
+  expect(states[4].state).toBe(RegionState.Green);
+  expect(states[4].from).toStrictEqual(new Date("2023-05-18T00:00:00+02:00"));
+  expect(states[4].to).toStrictEqual(new Date("2023-05-20T23:59:59+02:00"));
+};

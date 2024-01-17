@@ -11,4 +11,12 @@ export class ApiAddresses {
       this.baseAddress
     }/states?zip=${zip}&from=${from.toISOString()}&to=${to.toISOString()}`;
   }
+
+  static statesRelative(
+    zip: string,
+    hoursInPast: number,
+    hoursInFuture: number,
+  ): string {
+    return `${this.baseAddress}/statesRelative?zip=${zip}&hoursInPast=${hoursInPast}&hoursInFuture=${hoursInFuture}`;
+  }
 }
