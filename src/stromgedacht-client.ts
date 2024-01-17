@@ -1,6 +1,6 @@
 import { Forecast, RegionState, RegionStatePeriod } from "./models";
 import { ApiAddresses } from "./utils/api-addresses";
-import { ForecastDto } from "./dtos";
+import { ForecastDto, NowDto, StatesDto } from "./dtos";
 
 /**
  * Client for fetching StromGedacht API
@@ -17,9 +17,9 @@ export class StromgedachtClient {
 
     if (response.status !== 200) return null;
 
-    const regionState = await response.json();
+    const dto = (await response.json()) as NowDto;
 
-    return regionState.state;
+    return dto.state;
   }
 
   /**
@@ -39,9 +39,9 @@ export class StromgedachtClient {
 
     if (response.status !== 200) return [];
 
-    const json = await response.json();
+    const dto = (await response.json()) as StatesDto;
 
-    return json.states.map((regionStatePeriod: RegionStatePeriod) => ({
+    return dto.states.map((regionStatePeriod) => ({
       state: regionStatePeriod.state,
       from: new Date(regionStatePeriod.from),
       to: new Date(regionStatePeriod.to),
@@ -65,12 +65,12 @@ export class StromgedachtClient {
 
     if (response.status !== 200) return [];
 
-    const json = await response.json();
+    const dto = (await response.json()) as StatesDto;
 
-    return json.states.map((regionStatePeriod: RegionStatePeriod) => ({
-      state: regionStatePeriod.state,
-      from: new Date(regionStatePeriod.from),
-      to: new Date(regionStatePeriod.to),
+    return dto.states.map((period) => ({
+      state: period.state,
+      from: new Date(period.from),
+      to: new Date(period.to),
     }));
   }
 
