@@ -39,6 +39,8 @@ describe("StromgedachtClient", () => {
       new Date("2023-05-20T23:59:59+02:00"),
     );
 
+    expect(states).toBeTruthy();
+
     expectStates(states);
   });
 
@@ -51,6 +53,8 @@ describe("StromgedachtClient", () => {
     );
 
     const states = await stromgedachtClient.statesRelative("70173", 24, 48);
+
+    expect(states).toBeTruthy();
 
     expectStates(states);
   });
@@ -110,6 +114,8 @@ it("forecast", async () => {
     new Date("2023-05-14T00:00:00+02:00"),
     new Date("2023-05-20T23:59:59+02:00"),
   );
+
+  expect(forecast).toBeTruthy();
 
   expectForecast(forecast!);
 });
