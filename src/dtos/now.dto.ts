@@ -1,4 +1,4 @@
-import { RegionState } from "./region-state";
+import { RegionState } from "../models";
 
 /** @internal */
 export interface NowDto {
