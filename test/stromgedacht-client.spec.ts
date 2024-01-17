@@ -1,29 +1,28 @@
-
 import { noDataMock, nowMock, statesMock } from "./response-mocks";
 import { RegionState, stromgedachtClient } from "../src";
 
 describe("StromgedachtClient", () => {
   it("now", async () => {
-    global.fetch = jest.fn().mockImplementationOnce(() =>
+    globalThis.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
         json: () => Promise.resolve(nowMock),
       }),
     );
-    
+
     const state = await stromgedachtClient.now("70173");
 
     expect(state).toBe(RegionState.Green);
   });
 
   it("states", async () => {
-    global.fetch = jest.fn().mockImplementationOnce(() =>
+    globalThis.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         status: 200,
         json: () => Promise.resolve(statesMock),
       }),
     );
-    
+
     const states = await stromgedachtClient.states(
       "70173",
       new Date("2023-05-14T00:00:00+02:00"),
@@ -54,38 +53,42 @@ describe("StromgedachtClient", () => {
   });
 
   it("NoData", async () => {
-    global.fetch = jest.fn().mockImplementationOnce(() =>
+    globalThis.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         status: 400,
         json: () => Promise.resolve(noDataMock),
       }),
     );
-    
+
     const state = await stromgedachtClient.now("70170");
 
     expect(state).toBeNull();
   });
 
   it("ServerErrorNow", async () => {
-    global.fetch = jest.fn().mockImplementationOnce(() =>
+    globalThis.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         status: 500,
       }),
     );
-    
+
     const state = await stromgedachtClient.now("server-error");
 
     expect(state).toBeNull();
   });
 
   it("ServerErrorStates", async () => {
-    global.fetch = jest.fn().mockImplementationOnce(() =>
+    globalThis.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         status: 500,
       }),
     );
-    
-    const states = await stromgedachtClient.states("server-error", new Date(), new Date());
+
+    const states = await stromgedachtClient.states(
+      "server-error",
+      new Date(),
+      new Date(),
+    );
 
     expect(states).toHaveLength(0);
   });
