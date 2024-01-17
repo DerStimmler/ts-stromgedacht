@@ -158,4 +158,31 @@ const expectForecast = (forecast: Forecast) => {
     new Date(Date.UTC(2023, 4, 14, 0, 1, 0)),
   );
   expect(forecast.load[1].value).toBe(8455);
+
+  expect(forecast.renewableEnergy[0].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 0, 0)),
+  );
+  expect(forecast.renewableEnergy[0].value).toBe(8453.12);
+  expect(forecast.renewableEnergy[1].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 1, 0)),
+  );
+  expect(forecast.renewableEnergy[1].value).toBe(8455);
+
+  expect(forecast.residualLoad[0].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 0, 0)),
+  );
+  expect(forecast.residualLoad[0].value).toBe(8453.12);
+  expect(forecast.residualLoad[1].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 1, 0)),
+  );
+  expect(forecast.residualLoad[1].value).toBe(8455);
+
+  expect(forecast.superGreenThreshold[0].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 0, 0)),
+  );
+  expect(forecast.superGreenThreshold[0].value).toBe(8453.12);
+  expect(forecast.superGreenThreshold[1].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 1, 0)),
+  );
+  expect(forecast.superGreenThreshold[1].value).toBe(8455);
 };
