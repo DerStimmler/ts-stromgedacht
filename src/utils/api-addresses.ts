@@ -19,4 +19,10 @@ export class ApiAddresses {
   ): string {
     return `${this.baseAddress}/statesRelative?zip=${zip}&hoursInPast=${hoursInPast}&hoursInFuture=${hoursInFuture}`;
   }
+
+  static forecast(zip: string, from: Date, to: Date): string {
+    return `${
+      this.baseAddress
+    }/forecast?zip=${zip}&from=${from.toISOString()}&to=${to.toISOString()}`;
+  }
 }

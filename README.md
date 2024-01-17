@@ -68,6 +68,17 @@ const states = stromgedachtClient.statesRelative("70173", hoursInPast, hoursInFu
 If the api returns an error, this method returns an empty array.
 This could happen if the zip code is invalid / not supported or the supported period is exceeded.
 
+### Get forecast
+
+You can fetch the forecast of a region for a specific time period by calling the `forecast` methods and passing the zip code of the region, the start time and end time.
+
+```typescript
+const from = new Date("2023-01-01");
+const to = new Date("2023-01-03");
+
+const forecast = stromgedachtClient.forecast("70173", from, to);
+```
+
 ### API rate limits
 
 The api is limited to about 6 requests per minute.
