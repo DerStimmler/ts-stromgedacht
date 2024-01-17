@@ -1,5 +1,15 @@
-import { noDataMock, nowMock, statesMock } from "./response-mocks";
-import { RegionState, RegionStatePeriod, stromgedachtClient } from "../src";
+import {
+  forecastMock,
+  noDataMock,
+  nowMock,
+  statesMock,
+} from "./response-mocks";
+import {
+  Forecast,
+  RegionState,
+  RegionStatePeriod,
+  stromgedachtClient,
+} from "../src";
 
 describe("StromgedachtClient", () => {
   it("now", async () => {
@@ -87,6 +97,23 @@ describe("StromgedachtClient", () => {
   });
 });
 
+it("forecast", async () => {
+  globalThis.fetch = jest.fn().mockImplementationOnce(() =>
+    Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve(forecastMock),
+    }),
+  );
+
+  const forecast = await stromgedachtClient.forecast(
+    "70173",
+    new Date("2023-05-14T00:00:00+02:00"),
+    new Date("2023-05-20T23:59:59+02:00"),
+  );
+
+  expectForecast(forecast!);
+});
+
 const expectStates = (states: RegionStatePeriod[]) => {
   expect(states).toHaveLength(5);
 
@@ -109,4 +136,20 @@ const expectStates = (states: RegionStatePeriod[]) => {
   expect(states[4].state).toBe(RegionState.Green);
   expect(states[4].from).toStrictEqual(new Date("2023-05-18T00:00:00+02:00"));
   expect(states[4].to).toStrictEqual(new Date("2023-05-20T23:59:59+02:00"));
+};
+
+const expectForecast = (forecast: Forecast) => {
+  expect(forecast.load).toHaveLength(2);
+  expect(forecast.renewableEnergy).toHaveLength(2);
+  expect(forecast.residualLoad).toHaveLength(2);
+  expect(forecast.superGreenThreshold).toHaveLength(2);
+
+  expect(forecast.load[0].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 0, 0)),
+  );
+  expect(forecast.load[0].value).toBe(8453.12);
+  expect(forecast.load[1].dateTime).toStrictEqual(
+    new Date(Date.UTC(2023, 4, 14, 0, 1, 0)),
+  );
+  expect(forecast.load[1].value).toBe(8455);
 };
