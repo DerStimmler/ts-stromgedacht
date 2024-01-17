@@ -133,7 +133,7 @@ const expectStates = (states: RegionStatePeriod[]) => {
   expect(states[3].from).toStrictEqual(new Date("2023-05-17T00:00:00+02:00"));
   expect(states[3].to).toStrictEqual(new Date("2023-05-17T23:59:59+02:00"));
 
-  expect(states[4].state).toBe(RegionState.Green);
+  expect(states[4].state).toBe(RegionState.SuperGreen);
   expect(states[4].from).toStrictEqual(new Date("2023-05-18T00:00:00+02:00"));
   expect(states[4].to).toStrictEqual(new Date("2023-05-20T23:59:59+02:00"));
 };

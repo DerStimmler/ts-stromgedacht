@@ -3,11 +3,16 @@
  */
 export enum RegionState {
   /**
+   * Bring consumption forward - use electricity now
+   */
+  SuperGreen = -1,
+  /**
    * Normal operation - nothing to do
    */
   Green = 1,
   /**
    * Bring consumption forward - use electricity now
+   * @deprecated Use SuperGreen instead
    */
   Yellow = 2,
   /**

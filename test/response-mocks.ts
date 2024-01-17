@@ -27,7 +27,7 @@ export const statesMock = {
     {
       from: "2023-05-18T00:00:00+02:00",
       to: "2023-05-20T23:59:59+02:00",
-      state: 1,
+      state: -1,
     },
   ],
 };
